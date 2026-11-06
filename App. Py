@@ -1,0 +1,40 @@
+
+import streamlit as st
+
+st.title("Student Expense Tracker")
+st.write("Manage your daily expenses easily!")
+
+if "expenses" not in st.session_state:
+    st.session_state.expenses = []
+
+name = st.text_input("Expense Name")
+amount = st.number_input(
+    "Expense Amount",
+    min_value=0.0,
+    step=10.0
+)
+
+if st.button("Add Expense"):
+    if name.strip() and amount > 0:
+        st.session_state.expenses.append({
+            "name": name,
+            "amount": amount
+        })
+        st.success("Expense added successfully!")
+    else:
+        st.warning("Enter a valid name and amount.")
+
+st.subheader("Your Expenses")
+
+total = 0
+
+for expense in st.session_state.expenses:
+    st.write(
+        expense["name"],
+        "- Rs.",
+        expense["amount"]
+    )
+    total += expense["amount"]
+
+st.subheader("Total Expense")
+st.write("Rs.", total)
